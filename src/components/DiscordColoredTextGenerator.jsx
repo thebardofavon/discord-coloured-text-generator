@@ -76,6 +76,13 @@ const DiscordColoredTextGenerator = () => {
 
     const selection = window.getSelection();
     const text = selection.toString();
+
+      // Check if selection is within our textarea
+    if (!text || !textareaRef.current.contains(selection.anchorNode)) {
+      setSelectionAlert(true);
+      setTimeout(() => setSelectionAlert(false), 3000);
+      return;
+    }
     
     if (!text) {
       // Alert the user to select text first
@@ -171,6 +178,12 @@ const DiscordColoredTextGenerator = () => {
     });
     setTooltipVisible(true);
   };
+
+  useEffect(() => {
+    if (textareaRef.current && !textareaRef.current.innerHTML) {
+      textareaRef.current.innerHTML = 'Welcome to&nbsp;<span class="ansi-33">Rebane</span>\'s <span class="ansi-45"><span class="ansi-37">Discord</span></span>&nbsp;<span class="ansi-31">C</span><span class="ansi-32">o</span><span class="ansi-33">l</span><span class="ansi-34">o</span><span class="ansi-35">r</span><span class="ansi-36">e</span><span class="ansi-37">d</span>&nbsp;Text Generator!';
+    }
+  }, []);
 
   // Handle Enter key for line breaks
   useEffect(() => {
@@ -282,11 +295,12 @@ const DiscordColoredTextGenerator = () => {
         
         {selectionAlert && (
           <Alert color="yellow" sx={{ marginTop: '10px' }}>
-            Please select some text first before applying a style.
+            Please select some text in the editor first before applying a style.
           </Alert>
         )}
+
         
-        <Text color="gray" size="sm" mt="sm">First select text in the editor, then click a style button below to apply it.</Text>
+        <Text size="sm" mt="sm">First select text in the editor, then click a style button below to apply it.</Text>
         
         <Group position="center" spacing="xs" mt="sm">
           <Button 
@@ -338,7 +352,7 @@ const DiscordColoredTextGenerator = () => {
           ))}
         </Group>
         
-        <Group position="center" mt="md">
+        <Group position="center" mt="md" mb="md">
           <Text weight={700}>BG</Text>
           {[40, 41, 42, 43, 44, 45, 46, 47].map(code => (
             <Button 
@@ -362,36 +376,31 @@ const DiscordColoredTextGenerator = () => {
           ))}
         </Group>
         
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px', width: '100%' }}>
-          <div
-            ref={textareaRef}
-            style={{
-              width: '100%', 
-              maxWidth: '600px',
-              margin: '0 auto',
-              height: '200px',
-              backgroundColor: '#2F3136',
-              color: '#B9BBBE',
-              borderRadius: '5px',
-              border: '1px solid #202225',
-              padding: '10px',
-              textAlign: 'left',
-              fontFamily: 'monospace',
-              whiteSpace: 'pre-wrap',
-              fontSize: '0.875rem',
-              lineHeight: '1.125rem',
-              overflow: 'auto',
-              resize: 'both',
-              display: 'block',
-              outline: 'none'
-            }}
-            contentEditable="true"
-            onInput={handleInput}
-            dangerouslySetInnerHTML={{
-              __html: 'Welcome to&nbsp;<span class="ansi-33">Rebane</span>\'s <span class="ansi-45"><span class="ansi-37">Discord</span></span>&nbsp;<span class="ansi-31">C</span><span class="ansi-32">o</span><span class="ansi-33">l</span><span class="ansi-34">o</span><span class="ansi-35">r</span><span class="ansi-36">e</span><span class="ansi-37">d</span>&nbsp;Text Generator!'
-            }}
-          />
-        </Box>
+        <div
+          ref={textareaRef}
+          style={{
+            width: '100%', 
+            maxWidth: '600px',
+            margin: '0 auto',
+            height: '200px',
+            backgroundColor: '#2F3136',
+            color: '#B9BBBE',
+            borderRadius: '5px',
+            border: '1px solid #202225',
+            padding: '10px',
+            textAlign: 'left',
+            fontFamily: 'monospace',
+            whiteSpace: 'pre-wrap',
+            fontSize: '0.875rem',
+            lineHeight: '1.125rem',
+            overflow: 'auto',
+            resize: 'both',
+            display: 'block',
+            outline: 'none'
+          }}
+          contentEditable="true"
+          onInput={handleInput}
+        />
         
         <Button 
           variant="filled"

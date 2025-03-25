@@ -5,8 +5,9 @@
     justify-content: center;
     width: 100%;
     max-width: 100vw;
+    margin-top: 30px;
   }
-  
+
   /* Center all container elements */
   .mantine-Container-root {
     display: flex;
