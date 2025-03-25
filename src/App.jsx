@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import ColoredTextGenerator from './components/ColoredTextGenerator';
 
 export default function App() {
@@ -10,10 +10,12 @@ export default function App() {
   };
 
   return (
-    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-      <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-        <ColoredTextGenerator />
-      </MantineProvider>
-    </ColorSchemeProvider>
+    <MantineProvider 
+      theme={{ colorScheme }} 
+      withGlobalStyles 
+      withNormalizeCSS
+    >
+      <ColoredTextGenerator />
+    </MantineProvider>
   );
 }
