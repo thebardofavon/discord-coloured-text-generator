@@ -161,7 +161,7 @@ const DiscordColoredTextGenerator = () => {
   // Text area initialization
   useEffect(() => {
     if (textareaRef.current && !textareaRef.current.innerHTML) {
-      textareaRef.current.innerHTML = 'Welcome to&nbsp;<span class="ansi-33">Rebane</span>\'s <span class="ansi-45"><span class="ansi-37">Discord</span></span>&nbsp;<span class="ansi-31">C</span><span class="ansi-32">o</span><span class="ansi-33">l</span><span class="ansi-34">o</span><span class="ansi-35">r</span><span class="ansi-36">e</span><span class="ansi-37">d</span>&nbsp;Text Generator!';
+      textareaRef.current.innerHTML = 'Welcome to&nbsp;<span class="ansi-33">Anushka</span>\'s <span class="ansi-45"><span class="ansi-37">Discord</span></span>&nbsp;<span class="ansi-31">C</span><span class="ansi-32">o</span><span class="ansi-33">l</span><span class="ansi-34">o</span><span class="ansi-35">r</span><span class="ansi-36">e</span><span class="ansi-37">d</span>&nbsp;Text Generator!';
     }
   }, []);
 
@@ -253,7 +253,7 @@ const DiscordColoredTextGenerator = () => {
       paddingTop: '20px'
     }}>
       <Title order={1}>
-        Rebane's Discord <span style={{ color: '#5865F2', fontWeight: 'inherit' }}>Colored</span> Text Generator
+        Anushka's Discord <span style={{ color: '#5865F2', fontWeight: 'inherit' }}>Colored</span> Text Generator
       </Title>
       
       <Container size="sm" sx={{ maxWidth: '500px', margin: 'auto', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
