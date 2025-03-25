@@ -1,32 +1,11 @@
-import React, { useState } from 'react';
-import { MantineProvider, createTheme } from '@mantine/core';
-import { ColorSchemeScript } from '@mantine/core';
-import ColoredTextGenerator from './components/ColoredTextGenerator';
+import DiscordColoredTextGenerator from './components/DiscordColoredTextGenerator';
 
-// Create a theme (optional, but recommended for consistency)
-const theme = createTheme({
-  // You can customize your theme here
-  primaryColor: 'blue',
-  // Other theme options
-});
-
-export default function App() {
-  const [colorScheme, setColorScheme] = useState('dark');
-  
-  const toggleColorScheme = (value) => {
-    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
-  };
-
+function App() {
   return (
-    <>
-      <ColorSchemeScript />
-      <MantineProvider 
-        theme={theme}
-        defaultColorScheme={colorScheme}
-        forceColorScheme={colorScheme}
-      >
-        <ColoredTextGenerator />
-      </MantineProvider>
-    </>
+    <div className="App">
+      <DiscordColoredTextGenerator />
+    </div>
   );
 }
+
+export default App;
