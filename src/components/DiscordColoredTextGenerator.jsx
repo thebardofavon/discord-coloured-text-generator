@@ -33,27 +33,6 @@ const DiscordColoredTextGenerator = () => {
     "47": "Cream White",
   };
 
-  const colorMap = {
-    // FG colors
-    "30": "#4f545c",
-    "31": "#dc322f",
-    "32": "#859900",
-    "33": "#b58900",
-    "34": "#268bd2",
-    "35": "#d33682",
-    "36": "#2aa198",
-    "37": "#ffffff",
-    // BG colors
-    "40": "#002b36",
-    "41": "#cb4b16",
-    "42": "#586e75",
-    "43": "#657b83",
-    "44": "#839496",
-    "45": "#6c71c4",
-    "46": "#93a1a1",
-    "47": "#fdf6e3",
-  };
-
   // Handle sanitization of pasted content
   const handleInput = () => {
     if (!textareaRef.current) return;
@@ -179,6 +158,7 @@ const DiscordColoredTextGenerator = () => {
     setTooltipVisible(true);
   };
 
+  // Text area initialization
   useEffect(() => {
     if (textareaRef.current && !textareaRef.current.innerHTML) {
       textareaRef.current.innerHTML = 'Welcome to&nbsp;<span class="ansi-33">Rebane</span>\'s <span class="ansi-45"><span class="ansi-37">Discord</span></span>&nbsp;<span class="ansi-31">C</span><span class="ansi-32">o</span><span class="ansi-33">l</span><span class="ansi-34">o</span><span class="ansi-35">r</span><span class="ansi-36">e</span><span class="ansi-37">d</span>&nbsp;Text Generator!';

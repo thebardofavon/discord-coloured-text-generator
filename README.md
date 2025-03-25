@@ -1,12 +1,21 @@
-# React + Vite
+# Discord Colored Text Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a solution to the **Assignment** provided by **VideoDubber**. The goal of the assignment was to replicate the functionality of the page [Discord Colored Text Generator](https://rebane2001.com/discord-colored-text-generator/) while focusing on functionality and maintaining basic aesthetics. The project was built using **React** and **Mantine UI**.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Allows users to create Discord-formatted colored text using ANSI color codes.
+- Provides options to style text with foreground and background colors, bold, and underline.
+- Includes a copy button to copy the formatted text in Discord-compatible ANSI format.
+- Ensures that only text within the editor can be selected and styled, addressing a flaw in the original website where text outside the editor could also be styled.
 
-## Expanding the ESLint configuration
+## Improvements Over the Original
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The original website allowed text outside the text area to be selected and styled, which was identified as a flaw. This issue has been addressed in this implementation by ensuring that only text within the editor can be styled.
+
+## Tools and Libraries Used
+
+- **React**: For building the user interface.
+- **Mantine UI**: For UI components such as buttons, headings, containers, and alerts.
+- **Vite**: For fast development and build setup.
+- **ESLint**: For maintaining code quality and consistency.

@@ -6,12 +6,12 @@ import './index.css'
 import App from './App.jsx'
 
 const theme = createTheme({
-  colorScheme: 'dark'
+  colorScheme: 'dark', 
 });
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <MantineProvider theme={theme} defaultColorScheme="dark">
+    <MantineProvider theme={theme}>
       <App />
     </MantineProvider>
   </StrictMode>,
