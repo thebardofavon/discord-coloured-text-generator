@@ -1,15 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { 
-  MantineProvider, 
-  Text, 
-  Container, 
-  Title, 
-  Button, 
-  Group, 
-  Box, 
-  Paper,
-  Anchor
-} from '@mantine/core';
+import { Text, Container, Title, Button, Group, Box, Paper, Anchor } from '@mantine/core';
 
 const DiscordColoredTextGenerator = () => {
   const textareaRef = useRef(null);
@@ -230,7 +220,6 @@ const DiscordColoredTextGenerator = () => {
   }, []);
 
   return (
-    <MantineProvider theme={{ colorScheme: 'dark' }}>
       <Box sx={{ 
         minHeight: '100vh', 
         backgroundColor: '#36393F',
@@ -238,7 +227,7 @@ const DiscordColoredTextGenerator = () => {
         color: '#FFF', 
         padding: '20px'
       }}>
-        <Title order={1}>
+        <Title order={1} >
           Rebane's Discord <Text component="span" sx={{ color: '#5865F2' }}>Colored</Text> Text Generator
         </Title>
         
@@ -256,137 +245,138 @@ const DiscordColoredTextGenerator = () => {
           </Text>
         </Container>
         
+        <Container size="sm" sx={{ maxWidth: '500px', margin: 'auto' }}>
         <Title order={2} mt="lg">Create your text</Title>
-        
-        <Group position="center" spacing="xs" mt="sm">
-          <Button 
-            variant="filled" 
-            color="gray" 
-            onClick={() => handleStyleClick("0")}
-          >
-            Reset All
-          </Button>
-          <Button 
-            variant="filled"
-            color="gray" 
-            className="ansi-1"
-            onClick={() => handleStyleClick("1")}
-          >
-            Bold
-          </Button>
-          <Button 
-            variant="filled"
-            color="gray" 
-            className="ansi-4"
-            onClick={() => handleStyleClick("4")}
-          >
-            Line
-          </Button>
-        </Group>
-        
-        <Group position="center" mt="md">
-          <Text weight={700}>FG</Text>
-          {[30, 31, 32, 33, 34, 35, 36, 37].map(code => (
+          
+          <Group position="center" spacing="xs" mt="sm">
             <Button 
-              key={code}
-              variant="filled"
-              sx={{
-                backgroundColor: colorMap[code.toString()],
-                minWidth: '32px',
-                minHeight: '32px',
-                padding: 0
-              }}
-              onClick={() => handleStyleClick(code.toString())}
-              onMouseEnter={(e) => handleTooltipShow(code, e)}
-              onMouseLeave={() => setTooltipVisible(false)}
+              variant="filled" 
+              color="gray" 
+              onClick={() => handleStyleClick("0")}
             >
-              &nbsp;
+              Reset All
             </Button>
-          ))}
-        </Group>
-        
-        <Group position="center" mt="md">
-          <Text weight={700}>BG</Text>
-          {[40, 41, 42, 43, 44, 45, 46, 47].map(code => (
             <Button 
-              key={code}
               variant="filled"
-              sx={{
-                backgroundColor: colorMap[code.toString()],
-                minWidth: '32px',
-                minHeight: '32px',
-                padding: 0
-              }}
-              onClick={() => handleStyleClick(code.toString())}
-              onMouseEnter={(e) => handleTooltipShow(code, e)}
-              onMouseLeave={() => setTooltipVisible(false)}
+              color="gray" 
+              className="ansi-1"
+              onClick={() => handleStyleClick("1")}
             >
-              &nbsp;
+              Bold
             </Button>
-          ))}
-        </Group>
-        
-        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-          <Paper
-            ref={textareaRef}
-            sx={{
-              width: '600px',
-              height: '200px',
-              backgroundColor: '#2F3136',
-              color: '#B9BBBE',
-              borderRadius: '5px',
-              border: '1px solid #202225',
-              padding: '5px',
-              textAlign: 'left',
-              fontFamily: 'monospace',
-              whiteSpace: 'pre-wrap',
-              fontSize: '0.875rem',
-              lineHeight: '1.125rem',
-              overflow: 'auto',
-              resize: 'both',
-            }}
-            contentEditable
-            onInput={handleInput}
-            dangerouslySetInnerHTML={{
-              __html: 'Welcome to&nbsp;<span class="ansi-33">Rebane</span>\'s <span class="ansi-45"><span class="ansi-37">Discord</span></span>&nbsp;<span class="ansi-31">C</span><span class="ansi-32">o</span><span class="ansi-33">l</span><span class="ansi-34">o</span><span class="ansi-35">r</span><span class="ansi-36">e</span><span class="ansi-37">d</span>&nbsp;Text Generator!'
-            }}
-          />
-        </Box>
-        
-        <Button 
-          variant="filled"
-          color="gray"
-          mt="md"
-          sx={copyStyle}
-          onClick={handleCopy}
-        >
-          {copyMessage}
-        </Button>
-        
-        <Text size="xs" mt="md">
-          This is an unofficial tool, it is not made or endorsed by Discord.
-        </Text>
-        
-        {tooltipVisible && (
-          <Box
-            sx={{
-              position: 'absolute',
-              backgroundColor: '#3BA55D',
-              color: '#fff',
-              padding: '8px 16px',
-              borderRadius: '3px',
-              top: `${tooltipPosition.top}px`,
-              left: `${tooltipPosition.left}px`,
-              transform: 'translateX(-50%)',
-              zIndex: 1000,
-              pointerEvents: 'none'
-            }}
-          >
-            {tooltipContent}
+            <Button 
+              variant="filled"
+              color="gray" 
+              className="ansi-4"
+              onClick={() => handleStyleClick("4")}
+            >
+              Line
+            </Button>
+          </Group>
+          
+          <Group position="center" mt="md">
+            <Text weight={700}>FG</Text>
+            {[30, 31, 32, 33, 34, 35, 36, 37].map(code => (
+              <Button 
+                key={code}
+                variant="filled"
+                sx={{
+                  backgroundColor: colorMap[code.toString()],
+                  minWidth: '32px',
+                  minHeight: '32px',
+                  padding: 0
+                }}
+                onClick={() => handleStyleClick(code.toString())}
+                onMouseEnter={(e) => handleTooltipShow(code, e)}
+                onMouseLeave={() => setTooltipVisible(false)}
+              >
+                &nbsp;
+              </Button>
+            ))}
+          </Group>
+          
+          <Group position="center" mt="md">
+            <Text weight={700}>BG</Text>
+            {[40, 41, 42, 43, 44, 45, 46, 47].map(code => (
+              <Button 
+                key={code}
+                variant="filled"
+                sx={{
+                  backgroundColor: colorMap[code.toString()],
+                  minWidth: '32px',
+                  minHeight: '32px',
+                  padding: 0
+                }}
+                onClick={() => handleStyleClick(code.toString())}
+                onMouseEnter={(e) => handleTooltipShow(code, e)}
+                onMouseLeave={() => setTooltipVisible(false)}
+              >
+                &nbsp;
+              </Button>
+            ))}
+          </Group>
+          
+          <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+            <Paper
+              ref={textareaRef}
+              sx={{
+                width: '600px',
+                height: '200px',
+                backgroundColor: '#2F3136',
+                color: '#B9BBBE',
+                borderRadius: '5px',
+                border: '1px solid #202225',
+                padding: '5px',
+                textAlign: 'left',
+                fontFamily: 'monospace',
+                whiteSpace: 'pre-wrap',
+                fontSize: '0.875rem',
+                lineHeight: '1.125rem',
+                overflow: 'auto',
+                resize: 'both',
+              }}
+              contentEditable
+              onInput={handleInput}
+              dangerouslySetInnerHTML={{
+                __html: 'Welcome to&nbsp;<span class="ansi-33">Rebane</span>\'s <span class="ansi-45"><span class="ansi-37">Discord</span></span>&nbsp;<span class="ansi-31">C</span><span class="ansi-32">o</span><span class="ansi-33">l</span><span class="ansi-34">o</span><span class="ansi-35">r</span><span class="ansi-36">e</span><span class="ansi-37">d</span>&nbsp;Text Generator!'
+              }}
+            />
           </Box>
-        )}
+          
+          <Button 
+            variant="filled"
+            color="gray"
+            mt="md"
+            sx={copyStyle}
+            onClick={handleCopy}
+          >
+            {copyMessage}
+          </Button>
+          
+          <Text size="xs" mt="md">
+            This is an unofficial tool, it is not made or endorsed by Discord.
+          </Text>
+          
+          {tooltipVisible && (
+            <Box
+              sx={{
+                position: 'absolute',
+                backgroundColor: '#3BA55D',
+                color: '#fff',
+                padding: '8px 16px',
+                borderRadius: '3px',
+                top: `${tooltipPosition.top}px`,
+                left: `${tooltipPosition.left}px`,
+                transform: 'translateX(-50%)',
+                zIndex: 1000,
+                pointerEvents: 'none'
+              }}
+            >
+              {tooltipContent}
+            </Box>
+          )}
+        </Container>
       </Box>
-    </MantineProvider>
   );
 };
 
