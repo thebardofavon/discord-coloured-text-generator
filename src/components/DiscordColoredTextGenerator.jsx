@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Text, Container, Title, Button, Group, Box, Paper, Anchor } from '@mantine/core';
+import { Text, Container, Title, Button, Group, Box, Paper, Anchor, Alert } from '@mantine/core';
 
 const DiscordColoredTextGenerator = () => {
   const textareaRef = useRef(null);
@@ -9,6 +9,7 @@ const DiscordColoredTextGenerator = () => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
   const [copyCount, setCopyCount] = useState(0);
+  const [selectionAlert, setSelectionAlert] = useState(false);
   const copyTimeoutRef = useRef(null);
 
   const tooltipTexts = {
@@ -76,19 +77,29 @@ const DiscordColoredTextGenerator = () => {
     const selection = window.getSelection();
     const text = selection.toString();
     
-    if (!text) return;
+    if (!text) {
+      // Alert the user to select text first
+      setSelectionAlert(true);
+      setTimeout(() => setSelectionAlert(false), 3000);
+      return;
+    }
 
-    const span = document.createElement("span");
-    span.innerText = text;
-    span.classList.add(`ansi-${ansi}`);
+    try {
+      const span = document.createElement("span");
+      span.innerText = text;
+      span.className = `ansi-${ansi}`;
 
-    const range = selection.getRangeAt(0);
-    range.deleteContents();
-    range.insertNode(span);
+      const range = selection.getRangeAt(0);
+      range.deleteContents();
+      range.insertNode(span);
 
-    range.selectNodeContents(span);
-    selection.removeAllRanges();
-    selection.addRange(range);
+      // Keep selection on the text
+      range.selectNodeContents(span);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    } catch (err) {
+      console.error("Error applying style:", err);
+    }
   };
 
   // Convert styled HTML to ANSI codes
@@ -143,10 +154,8 @@ const DiscordColoredTextGenerator = () => {
         setCopyMessage("Copy text as Discord formatted");
       }, 2000);
     }).catch((err) => {
-      // We don't need to stop the users if they get a little too excited about the button
-      if (copyCount > 2) return;
-      alert("Copying failed for some reason, let's try showing an alert, maybe you can copy it instead.");
-      alert(toCopy);
+      console.error("Copy failed:", err);
+      alert("Copying failed. You can try selecting and copying the text manually.");
     });
   };
 
@@ -187,30 +196,49 @@ const DiscordColoredTextGenerator = () => {
     };
   }, []);
 
-  // Add CSS classes to document for ANSI styling
+  // Add CSS classes directly to document for ANSI styling with !important
   useEffect(() => {
     const styleEl = document.createElement('style');
     styleEl.textContent = `
-      .ansi-1 { font-weight: 700; text-decoration: none; }
-      .ansi-4 { font-weight: 500; text-decoration: underline; }
+      .ansi-1 { font-weight: 700 !important; text-decoration: none !important; }
+      .ansi-4 { font-weight: 500 !important; text-decoration: underline !important; }
       
-      .ansi-30 { color: #4f545c; }
-      .ansi-31 { color: #dc322f; }
-      .ansi-32 { color: #859900; }
-      .ansi-33 { color: #b58900; }
-      .ansi-34 { color: #268bd2; }
-      .ansi-35 { color: #d33682; }
-      .ansi-36 { color: #2aa198; }
-      .ansi-37 { color: #ffffff; }
+      .ansi-30 { color: #4f545c !important; }
+      .ansi-31 { color: #dc322f !important; }
+      .ansi-32 { color: #859900 !important; }
+      .ansi-33 { color: #b58900 !important; }
+      .ansi-34 { color: #268bd2 !important; }
+      .ansi-35 { color: #d33682 !important; }
+      .ansi-36 { color: #2aa198 !important; }
+      .ansi-37 { color: #ffffff !important; }
       
-      .ansi-40 { background-color: #002b36; }
-      .ansi-41 { background-color: #cb4b16; }
-      .ansi-42 { background-color: #586e75; }
-      .ansi-43 { background-color: #657b83; }
-      .ansi-44 { background-color: #839496; }
-      .ansi-45 { background-color: #6c71c4; }
-      .ansi-46 { background-color: #93a1a1; }
-      .ansi-47 { background-color: #fdf6e3; }
+      .ansi-40 { background-color: #002b36 !important; }
+      .ansi-41 { background-color: #cb4b16 !important; }
+      .ansi-42 { background-color: #586e75 !important; }
+      .ansi-43 { background-color: #657b83 !important; }
+      .ansi-44 { background-color: #839496 !important; }
+      .ansi-45 { background-color: #6c71c4 !important; }
+      .ansi-46 { background-color: #93a1a1 !important; }
+      .ansi-47 { background-color: #fdf6e3 !important; }
+
+      /* Custom color button styles to ensure they show correctly */
+      .color-button-30 { background-color: #4f545c !important; }
+      .color-button-31 { background-color: #dc322f !important; }
+      .color-button-32 { background-color: #859900 !important; }
+      .color-button-33 { background-color: #b58900 !important; }
+      .color-button-34 { background-color: #268bd2 !important; }
+      .color-button-35 { background-color: #d33682 !important; }
+      .color-button-36 { background-color: #2aa198 !important; }
+      .color-button-37 { background-color: #ffffff !important; }
+      
+      .color-button-40 { background-color: #002b36 !important; }
+      .color-button-41 { background-color: #cb4b16 !important; }
+      .color-button-42 { background-color: #586e75 !important; }
+      .color-button-43 { background-color: #657b83 !important; }
+      .color-button-44 { background-color: #839496 !important; }
+      .color-button-45 { background-color: #6c71c4 !important; }
+      .color-button-46 { background-color: #93a1a1 !important; }
+      .color-button-47 { background-color: #fdf6e3 !important; }
     `;
     document.head.appendChild(styleEl);
     
@@ -220,163 +248,185 @@ const DiscordColoredTextGenerator = () => {
   }, []);
 
   return (
-      <Box sx={{ 
-        minHeight: '100vh', 
-        backgroundColor: '#36393F',
-        textAlign: 'center', 
-        color: '#FFF', 
-        padding: '20px'
-      }}>
-        <Title order={1} >
-          Rebane's Discord <Text component="span" sx={{ color: '#5865F2' }}>Colored</Text> Text Generator
-        </Title>
+    <Box sx={{ 
+      minHeight: '100vh', 
+      backgroundColor: '#36393F',
+      textAlign: 'center', 
+      color: '#FFF', 
+      padding: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      paddingTop: '20px'
+    }}>
+      <Title order={1}>
+        Rebane's Discord <span style={{ color: '#5865F2', fontWeight: 'inherit' }}>Colored</span> Text Generator
+      </Title>
+      
+      <Container size="sm" sx={{ maxWidth: '500px', margin: 'auto', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Title order={3} mt="md">About</Title>
+        <Text>This is a simple app that creates colored Discord messages using the ANSI color codes available on the latest Discord desktop versions.</Text>
+        <Text mt="xs">To use this, write your text, select parts of it and assign colors to them, then copy it using the button below, and send in a Discord message.</Text>
         
-        <Container size="sm" sx={{ maxWidth: '500px', margin: 'auto' }}>
-          <Title order={3} mt="md">About</Title>
-          <Text>This is a simple app that creates colored Discord messages using the ANSI color codes available on the latest Discord desktop versions.</Text>
-          <Text mt="xs">To use this, write your text, select parts of it and assign colors to them, then copy it using the button below, and send in a Discord message.</Text>
-          
-          <Title order={3} mt="md">Source Code</Title>
-          <Text>
-            This app runs entirely in your browser and the source code is freely available on{' '}
-            <Anchor href="https://gist.github.com/rebane2001/07f2d8e80df053c70a1576d27eabe97c" sx={{ color: '#00AFF4' }}>GitHub</Anchor>. 
-            Shout out to kkrypt0nn for{' '}
-            <Anchor href="https://gist.github.com/kkrypt0nn/a02506f3712ff2d1c8ca7c9e0aed7c06" sx={{ color: '#00AFF4' }}>this guide</Anchor>.
-          </Text>
-        </Container>
-        
-        <Container size="sm" sx={{ maxWidth: '500px', margin: 'auto' }}>
+        <Title order={3} mt="md">Source Code</Title>
+        <Text>
+          This app runs entirely in your browser and the source code is freely available on{' '}
+          <Anchor href="https://gist.github.com/rebane2001/07f2d8e80df053c70a1576d27eabe97c" sx={{ color: '#00AFF4' }}>GitHub</Anchor>. 
+          Shout out to kkrypt0nn for{' '}
+          <Anchor href="https://gist.github.com/kkrypt0nn/a02506f3712ff2d1c8ca7c9e0aed7c06" sx={{ color: '#00AFF4' }}>this guide</Anchor>.
+        </Text>
+      </Container>
+      
+      <Container size="sm" sx={{ maxWidth: '500px', margin: 'auto' }}>
         <Title order={2} mt="lg">Create your text</Title>
-          
-          <Group position="center" spacing="xs" mt="sm">
-            <Button 
-              variant="filled" 
-              color="gray" 
-              onClick={() => handleStyleClick("0")}
-            >
-              Reset All
-            </Button>
-            <Button 
-              variant="filled"
-              color="gray" 
-              className="ansi-1"
-              onClick={() => handleStyleClick("1")}
-            >
-              Bold
-            </Button>
-            <Button 
-              variant="filled"
-              color="gray" 
-              className="ansi-4"
-              onClick={() => handleStyleClick("4")}
-            >
-              Line
-            </Button>
-          </Group>
-          
-          <Group position="center" mt="md">
-            <Text weight={700}>FG</Text>
-            {[30, 31, 32, 33, 34, 35, 36, 37].map(code => (
-              <Button 
-                key={code}
-                variant="filled"
-                sx={{
-                  backgroundColor: colorMap[code.toString()],
-                  minWidth: '32px',
-                  minHeight: '32px',
-                  padding: 0
-                }}
-                onClick={() => handleStyleClick(code.toString())}
-                onMouseEnter={(e) => handleTooltipShow(code, e)}
-                onMouseLeave={() => setTooltipVisible(false)}
-              >
-                &nbsp;
-              </Button>
-            ))}
-          </Group>
-          
-          <Group position="center" mt="md">
-            <Text weight={700}>BG</Text>
-            {[40, 41, 42, 43, 44, 45, 46, 47].map(code => (
-              <Button 
-                key={code}
-                variant="filled"
-                sx={{
-                  backgroundColor: colorMap[code.toString()],
-                  minWidth: '32px',
-                  minHeight: '32px',
-                  padding: 0
-                }}
-                onClick={() => handleStyleClick(code.toString())}
-                onMouseEnter={(e) => handleTooltipShow(code, e)}
-                onMouseLeave={() => setTooltipVisible(false)}
-              >
-                &nbsp;
-              </Button>
-            ))}
-          </Group>
-          
-          <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-            <Paper
-              ref={textareaRef}
-              sx={{
-                width: '600px',
-                height: '200px',
-                backgroundColor: '#2F3136',
-                color: '#B9BBBE',
-                borderRadius: '5px',
-                border: '1px solid #202225',
-                padding: '5px',
-                textAlign: 'left',
-                fontFamily: 'monospace',
-                whiteSpace: 'pre-wrap',
-                fontSize: '0.875rem',
-                lineHeight: '1.125rem',
-                overflow: 'auto',
-                resize: 'both',
-              }}
-              contentEditable
-              onInput={handleInput}
-              dangerouslySetInnerHTML={{
-                __html: 'Welcome to&nbsp;<span class="ansi-33">Rebane</span>\'s <span class="ansi-45"><span class="ansi-37">Discord</span></span>&nbsp;<span class="ansi-31">C</span><span class="ansi-32">o</span><span class="ansi-33">l</span><span class="ansi-34">o</span><span class="ansi-35">r</span><span class="ansi-36">e</span><span class="ansi-37">d</span>&nbsp;Text Generator!'
-              }}
-            />
-          </Box>
-          
+        
+        {selectionAlert && (
+          <Alert color="yellow" sx={{ marginTop: '10px' }}>
+            Please select some text first before applying a style.
+          </Alert>
+        )}
+        
+        <Text color="gray" size="sm" mt="sm">First select text in the editor, then click a style button below to apply it.</Text>
+        
+        <Group position="center" spacing="xs" mt="sm">
+          <Button 
+            variant="filled" 
+            color="gray" 
+            onClick={() => handleStyleClick("0")}
+          >
+            Reset All
+          </Button>
           <Button 
             variant="filled"
-            color="gray"
-            mt="md"
-            sx={copyStyle}
-            onClick={handleCopy}
+            color="gray" 
+            sx={{ fontWeight: 700 }}
+            onClick={() => handleStyleClick("1")}
           >
-            {copyMessage}
+            Bold
           </Button>
-          
-          <Text size="xs" mt="md">
-            This is an unofficial tool, it is not made or endorsed by Discord.
-          </Text>
-          
-          {tooltipVisible && (
-            <Box
+          <Button 
+            variant="filled"
+            color="gray" 
+            sx={{ textDecoration: 'underline' }}
+            onClick={() => handleStyleClick("4")}
+          >
+            Line
+          </Button>
+        </Group>
+        
+        <Group position="center" mt="md">
+          <Text weight={700}>FG</Text>
+          {[30, 31, 32, 33, 34, 35, 36, 37].map(code => (
+            <Button 
+              key={code}
+              variant="filled"
+              className={`color-button-${code}`}
               sx={{
-                position: 'absolute',
-                backgroundColor: '#3BA55D',
-                color: '#fff',
-                padding: '8px 16px',
-                borderRadius: '3px',
-                top: `${tooltipPosition.top}px`,
-                left: `${tooltipPosition.left}px`,
-                transform: 'translateX(-50%)',
-                zIndex: 1000,
-                pointerEvents: 'none'
+                minWidth: '32px',
+                minHeight: '32px',
+                padding: 0,
+                '&:hover': {
+                  filter: 'brightness(1.2)'
+                }
               }}
+              onClick={() => handleStyleClick(code.toString())}
+              onMouseEnter={(e) => handleTooltipShow(code, e)}
+              onMouseLeave={() => setTooltipVisible(false)}
             >
-              {tooltipContent}
-            </Box>
-          )}
-        </Container>
-      </Box>
+              &nbsp;
+            </Button>
+          ))}
+        </Group>
+        
+        <Group position="center" mt="md">
+          <Text weight={700}>BG</Text>
+          {[40, 41, 42, 43, 44, 45, 46, 47].map(code => (
+            <Button 
+              key={code}
+              variant="filled"
+              className={`color-button-${code}`}
+              sx={{
+                minWidth: '32px',
+                minHeight: '32px',
+                padding: 0,
+                '&:hover': {
+                  filter: 'brightness(1.2)'
+                }
+              }}
+              onClick={() => handleStyleClick(code.toString())}
+              onMouseEnter={(e) => handleTooltipShow(code, e)}
+              onMouseLeave={() => setTooltipVisible(false)}
+            >
+              &nbsp;
+            </Button>
+          ))}
+        </Group>
+        
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px', width: '100%' }}>
+          <div
+            ref={textareaRef}
+            style={{
+              width: '100%', 
+              maxWidth: '600px',
+              margin: '0 auto',
+              height: '200px',
+              backgroundColor: '#2F3136',
+              color: '#B9BBBE',
+              borderRadius: '5px',
+              border: '1px solid #202225',
+              padding: '10px',
+              textAlign: 'left',
+              fontFamily: 'monospace',
+              whiteSpace: 'pre-wrap',
+              fontSize: '0.875rem',
+              lineHeight: '1.125rem',
+              overflow: 'auto',
+              resize: 'both',
+              display: 'block',
+              outline: 'none'
+            }}
+            contentEditable="true"
+            onInput={handleInput}
+            dangerouslySetInnerHTML={{
+              __html: 'Welcome to&nbsp;<span class="ansi-33">Rebane</span>\'s <span class="ansi-45"><span class="ansi-37">Discord</span></span>&nbsp;<span class="ansi-31">C</span><span class="ansi-32">o</span><span class="ansi-33">l</span><span class="ansi-34">o</span><span class="ansi-35">r</span><span class="ansi-36">e</span><span class="ansi-37">d</span>&nbsp;Text Generator!'
+            }}
+          />
+        </Box>
+        
+        <Button 
+          variant="filled"
+          color="gray"
+          mt="md"
+          sx={{...copyStyle, display: 'block', margin: '20px auto'}}
+          onClick={handleCopy}
+        >
+          {copyMessage}
+        </Button>
+        
+        <Text size="xs" mt="md">
+          This is an unofficial tool, it is not made or endorsed by Discord.
+        </Text>
+        
+        {tooltipVisible && (
+          <div
+            style={{
+              position: 'absolute',
+              backgroundColor: '#3BA55D',
+              color: '#fff',
+              padding: '8px 16px',
+              borderRadius: '3px',
+              top: `${tooltipPosition.top}px`,
+              left: `${tooltipPosition.left}px`,
+              transform: 'translateX(-50%)',
+              zIndex: 1000,
+              pointerEvents: 'none'
+            }}
+          >
+            {tooltipContent}
+          </div>
+        )}
+      </Container>
+    </Box>
   );
 };
 
