@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
-import { MantineProvider } from '@mantine/core';
+import { MantineProvider, createTheme } from '@mantine/core';
+import { ColorSchemeScript } from '@mantine/core';
 import ColoredTextGenerator from './components/ColoredTextGenerator';
+
+// Create a theme (optional, but recommended for consistency)
+const theme = createTheme({
+  // You can customize your theme here
+  primaryColor: 'blue',
+  // Other theme options
+});
 
 export default function App() {
   const [colorScheme, setColorScheme] = useState('dark');
@@ -10,12 +18,15 @@ export default function App() {
   };
 
   return (
-    <MantineProvider 
-      theme={{ colorScheme }} 
-      withGlobalStyles 
-      withNormalizeCSS
-    >
-      <ColoredTextGenerator />
-    </MantineProvider>
+    <>
+      <ColorSchemeScript />
+      <MantineProvider 
+        theme={theme}
+        defaultColorScheme={colorScheme}
+        forceColorScheme={colorScheme}
+      >
+        <ColoredTextGenerator />
+      </MantineProvider>
+    </>
   );
 }
